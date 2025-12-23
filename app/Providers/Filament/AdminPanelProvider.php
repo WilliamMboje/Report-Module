@@ -40,7 +40,6 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
                 \App\Filament\Widgets\LegalAidProvidersStatsWidget::class,
-                \App\Filament\Widgets\ProvidersPieChartWidget::class,
                 AccountWidget::class,
                 FilamentInfoWidget::class,
             ])
