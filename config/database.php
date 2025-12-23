@@ -98,7 +98,7 @@ return [
             'search_path' => 'public',
             'sslmode' => 'prefer',
         ],
-
+// ---------------------------------ADDED CODES FOR SERVER INTERACTION-------------------------------------------
         // 'sqlsrv_lsms' => [
         //     'driver' => 'sqlsrv',
         //     'host' => env('DB_HOST_LSMS', 'localhost'),
