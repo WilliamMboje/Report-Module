@@ -42,7 +42,8 @@ class LegalAidProviderResource extends Resource
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
     {
         return parent::getEloquentQuery()
-            ->select(['id', 'reg_no', 'name', 'licence_no', 'approved_date', 'licence_expiry_date', 'region', 'district', 'email', 'phone', 'paid', 'created_at', 'updated_at']);
+            ->select(['id', 'reg_no', 'name', 'licence_no', 'approved_date', 'licence_expiry_date', 'region', 'district', 'email', 'phone', 'paid', 'created_at', 'updated_at'])
+            ->with(['reports']);
     }
 
     public static function getRelations(): array
