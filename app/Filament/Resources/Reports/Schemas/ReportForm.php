@@ -89,7 +89,9 @@ class ReportForm
                                             ->live(),
                                         \Filament\Forms\Components\Select::make('filters.region')
                                             ->label('Select Region')
-                                            ->options(\App\Models\LegalAidProvider::distinct()->pluck('region', 'region'))
+                                            ->options(fn () => cache()->remember('legal_aid_regions', 60 * 60, function () {
+                                                return \App\Models\LegalAidProvider::distinct()->orderBy('region')->pluck('region', 'region')->filter()->toArray();
+                                            }))
                                             ->searchable()
                                             ->placeholder('Choose a region...')
                                             ->visible(fn ($get) => $get('filters.region_scope') === 'specific'),
@@ -108,7 +110,9 @@ class ReportForm
                                             ->live(),
                                         \Filament\Forms\Components\Select::make('filters.district')
                                             ->label('Select District')
-                                            ->options(\App\Models\LegalAidProvider::distinct()->pluck('district', 'district'))
+                                            ->options(fn () => cache()->remember('legal_aid_districts', 60 * 60, function () {
+                                                return \App\Models\LegalAidProvider::distinct()->orderBy('district')->pluck('district', 'district')->filter()->toArray();
+                                            }))
                                             ->searchable()
                                             ->placeholder('Choose a district...')
                                             ->visible(fn ($get) => $get('filters.district_scope') === 'specific'),

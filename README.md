@@ -46,6 +46,23 @@ php artisan key:generate
 - Run the development server: `php artisan serve`
 - Run tests: `./vendor/bin/phpunit` or `php artisan test`
 
+## Performance
+
+- Enable query caching and response caching where appropriate.
+- Use eager-loading to avoid N+1 queries: prefer `with('relation')` on Eloquent queries.
+- Cache static dropdown data (regions, districts) to reduce DB load.
+- Use `php artisan config:cache` and `php artisan route:cache` in production.
+- Use opcode cache (OPcache) in PHP and enable production optimizations in `config/app.php`.
+
+Quick commands for production optimizations:
+
+```bash
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+composer install --optimize-autoloader --no-dev
+```
+
 ## Contributing
 
 Contributions welcome. Please open issues or pull requests against the `main` branch.
