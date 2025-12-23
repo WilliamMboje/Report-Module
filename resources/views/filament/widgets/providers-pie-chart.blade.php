@@ -17,6 +17,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
     <script>
         (function () {
             const ctx = document.getElementById('providersPieChart');
@@ -24,11 +25,17 @@
 
             const labels = @json($labels);
             const data = @json($data);
+            const labelsWithCounts = labels.map((l, i) => `${l} (${data[i] ?? 0})`);
+
+            // Register plugin
+            if (Chart && Chart.register) {
+                Chart.register(ChartDataLabels);
+            }
 
             new Chart(ctx, {
                 type: 'pie',
                 data: {
-                    labels: labels,
+                    labels: labelsWithCounts,
                     datasets: [{
                         data: data,
                         backgroundColor: [
@@ -42,6 +49,13 @@
                     maintainAspectRatio: true,
                     plugins: {
                         legend: { position: 'bottom' },
+                        datalabels: {
+                            color: '#ffffff',
+                            formatter: function (value, ctx) {
+                                return value;
+                            },
+                            font: { weight: '600' }
+                        }
                     },
                 },
             });
