@@ -10,6 +10,9 @@ class ProvidersPieChartWidget extends Widget
 
     public array $labels = [];
     public array $data = [];
+    public int $total = 0;
+    public int $paid = 0;
+    public int $unpaid = 0;
 
     public function mount(): void
     {
@@ -27,5 +30,9 @@ class ProvidersPieChartWidget extends Widget
 
         $this->labels = ['Paid', 'Unpaid'];
         $this->data = [(int) ($stats['paid'] ?? 0), (int) ($stats['unpaid'] ?? 0)];
+
+        $this->total = (int) ($stats['total'] ?? ($this->data[0] + $this->data[1]));
+        $this->paid = (int) ($stats['paid'] ?? $this->data[0]);
+        $this->unpaid = (int) ($stats['unpaid'] ?? $this->data[1]);
     }
 }
