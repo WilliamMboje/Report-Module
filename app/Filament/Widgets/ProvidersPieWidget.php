@@ -11,7 +11,7 @@ class ProvidersPieWidget extends Widget
     public array $labels = [];
     public array $data = [];
 
-    protected function mount(): void
+    public function mount(): void
     {
         $stats = cache()->remember('providers_pie_stats', 300, function () {
             $total = \App\Models\LegalAidProvider::count();
