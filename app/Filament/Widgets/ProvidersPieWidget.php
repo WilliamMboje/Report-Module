@@ -6,7 +6,7 @@ use Filament\Widgets\Widget;
 
 class ProvidersPieWidget extends Widget
 {
-    protected static string $view = 'filament.widgets.pie-providers';
+    protected string $view = 'filament.widgets.pie-providers';
 
     public array $labels = [];
     public array $data = [];
