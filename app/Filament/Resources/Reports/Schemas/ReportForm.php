@@ -13,9 +13,14 @@ use Illuminate\Support\Facades\Log;
 class ReportForm
 {
     public static function configure(Schema $schema): Schema
+
+    // -----------------------TESTING CODE BELOW FOR DB SEVER SIDE INTERACTION-----------------------
     {
                     // $results = DB::connection('sqlsrv_lsms')->select('EXEC uspGetEoTDipsuteType');
                     // dd($results);
+                    
+// -----------------------TESTING CODE ABOVE FOR DB SEVER SIDE INTERACTION-----------------------
+
 
         return $schema
             ->components([

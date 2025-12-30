@@ -54,6 +54,8 @@ php artisan key:generate
 - Use `php artisan config:cache` and `php artisan route:cache` in production.
 - Use opcode cache (OPcache) in PHP and enable production optimizations in `config/app.php`.
 
+- Added DB indexes on `legal_aid_providers` (`region`, `district`, `paid`, `approved_date`) to speed up filtered and searchable queries.
+
 Quick commands for production optimizations:
 
 ```bash
