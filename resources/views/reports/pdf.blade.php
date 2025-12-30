@@ -86,11 +86,11 @@
     
     <div class="header">
         <h1>THE UNITED REPUBLIC OF TANZANIA</h1>
-        <h2>MINISTRY OF CONSTITUTIONAL AND LEGAL AFFAIRS</h2>
+        <h3>MINISTRY OF CONSTITUTIONAL AND LEGAL AFFAIRS</h3>
         <h3>(MoCLA)</h3>
         <img src="{{ public_path('images/logo.png') }}" class="logo" alt="Logo">
         <br>
-         <h2><strong>Title:</strong> {{ $record->title }}<br></h2>
+         <h3><strong>Title:</strong> {{ $record->title }}<br></h3>
     </div>
 
     <div class="report-info">

@@ -21,5 +21,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        // Seed 50,000 legal aid providers (in batches)
+        $this->call(LegalAidProviderSeeder::class);
     }
 }
