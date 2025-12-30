@@ -49,14 +49,14 @@ class LegalAidProviderFactory extends Factory
         $district = $this->faker->randomElement($tanzaniaLocations[$region]);
 
         return [
-            'reg_no' => 'LAP-' . $this->faker->unique()->numberBetween(1000, 9999),
+            'reg_no' => 'LAP-' . strtoupper(uniqid()),
             'name' => $this->faker->company,
-            'licence_no' => 'LIC-' . $this->faker->unique()->numberBetween(10000, 99999),
+            'licence_no' => 'LIC-' . strtoupper(uniqid()),
             'approved_date' => $this->faker->dateTimeBetween('2019-01-01', 'now')->format('Y-m-d'),
             'licence_expiry_date' => $this->faker->dateTimeBetween('now', '+2 years')->format('Y-m-d'),
             'region' => $region,
             'district' => $district,
-            'email' => $this->faker->unique()->companyEmail,
+            'email' => 'provider' . $this->faker->unique()->numberBetween(100000, 99999999) . '@example.com',
             'phone' => $this->faker->phoneNumber,
             'paid' => $this->faker->boolean(40), // 40% chance of being paid
         ];
