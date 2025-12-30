@@ -54,6 +54,12 @@ class ViewReport extends ViewRecord
                     // Use landscape orientation if more than 4 columns
                     $orientation = count($columns) > 4 ? 'landscape' : 'portrait';
 
+                    // Increase execution time and memory for large PDFs
+                    if (function_exists('set_time_limit')) {
+                        @set_time_limit(0);
+                    }
+                    @ini_set('memory_limit', '-1');
+
                     $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('reports.pdf', [
                         'record' => $record,
                         'providers' => $providers,
