@@ -20,7 +20,6 @@ class ViewReport extends ViewRecord
                 ->label('Download CSV')
                 ->icon('heroicon-o-arrow-down-tray')
                 ->action(function (\App\Models\Report $record) {
-                    Log::info($record);
                     $providers = $record->providers;
                     $columns = $record->columns ?? [];
 
@@ -28,7 +27,6 @@ class ViewReport extends ViewRecord
                     $csv->insertOne($columns);
 
                     foreach ($providers as $provider) {
-                        Log::info($provider);
                         $row = [];
                         foreach ($columns as $column) {
                             $row[] = $provider->$column;
@@ -46,7 +44,7 @@ class ViewReport extends ViewRecord
                 ->action(function (\App\Models\Report $record) {
                     $providers = $record->providers;
                     $columns = $record->columns ?? [];
-                    
+
                     if (empty($columns)) {
                         $columns = ['name']; // Default
                     }

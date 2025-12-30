@@ -1,3 +1,3 @@
 <x-filament-widgets::widget>
-    {{ $this->table }}
+{{--    {{ $this->table }}--}}
 </x-filament-widgets::widget>

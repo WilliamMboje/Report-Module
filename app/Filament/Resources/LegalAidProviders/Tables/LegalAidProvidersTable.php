@@ -14,6 +14,8 @@ use Filament\Tables\Filters\SelectFilter;
 
 class LegalAidProvidersTable
 {
+
+
     public static function configure(Table $table): Table
     {
         return $table
