@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Filament\Resources\AwarenessReports\Pages;
+namespace App\Filament\Resources\ApiUserReports\Pages;
 
-use App\Filament\Resources\AwarenessReports\AwarenessReportResource;
+use App\Filament\Resources\ApiUserReports\ApiUserReportResource;
+use App\Jobs\GenerateConflictReportPdf;
 use Barryvdh\Snappy\Facades\SnappyPdf;
 use Filament\Actions\Action;
+use Filament\Actions\CreateAction;
 use Filament\Notifications\Notification;
+use Filament\Resources\Pages\ListRecords;
 use Filament\Resources\Pages\ViewRecord;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
-use App\Jobs\GenerateConflictReportPdf;
 use Illuminate\Support\Facades\Storage;
 
-class ViewAwarenessReport1 extends ViewRecord
+class ViewApiUserReports extends ViewRecord
 {
-    protected static string $resource = AwarenessReportResource::class;
+    protected static string $resource = ApiUserReportResource::class;
 
     protected function getHeaderActions(): array
     {
@@ -24,7 +24,7 @@ class ViewAwarenessReport1 extends ViewRecord
                 ->icon('heroicon-o-arrow-down-tray')
                 ->action(function () {
                     $record = $this->record; //AwarenessReport DB model
-                    $providers = \App\Models\AwarenessReportProvider::all(); // Fetch all API data
+                    $providers = \App\Models\ApiUserReportProvider::all(); // Fetch all API data
                     $columns = $record->columns;
                     $csv = \League\Csv\Writer::createFromString('');
                     $csv->insertOne($columns);
@@ -40,17 +40,14 @@ class ViewAwarenessReport1 extends ViewRecord
                     );
                 }),
 
-           //WITHOUt JOBS
             Action::make('downloadPdf')
                 ->label('Download PDF')
                 ->icon('heroicon-o-document-text')
                 ->action(function () {
                     $record = $this->record;
-                    $providers = \App\Models\AwarenessReportProvider::all();
+                    $providers = \App\Models\ApiUserReportProvider::all();
 //                    Log::info($providers);
                     $columns = $record->columns;
-
-
 
                     $orientation = count($columns) > 4 ? 'landscape' : 'portrait';
 
@@ -82,4 +79,5 @@ class ViewAwarenessReport1 extends ViewRecord
                 }),
         ];
     }
+
 }

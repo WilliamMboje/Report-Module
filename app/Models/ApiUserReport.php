@@ -4,9 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-
-
-class AwarenessReport extends Model
+class ApiUserReport extends Model
 {
     protected $fillable = [
         'title',
