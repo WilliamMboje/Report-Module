@@ -4,24 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Sushi\Sushi;
-use Illuminate\Support\Facades\Http;
 
 class AwarenessReportProvider extends Model
 {
     use Sushi;
-
-
     protected $schema = [
-//        'id' => 'integer',        // just an index
-//        'date' => 'string',       // e.g., case date
-//        'mwananchi' => 'string',  // user/citizen
-//        'mkoa' => 'string',       // region
-//        'maelezo' => 'string',    // description
-//        'aina' => 'string',       // type
-//        'hali' => 'string',       // status
-
         'id' => 'integer',
         'Maelezo' => 'string',
         'Mkoa' => 'string',
@@ -39,10 +29,8 @@ class AwarenessReportProvider extends Model
             'Authorization' => 'Bearer ' . $token,
             'Accept' => 'application/json',
         ];
-
         $url = env('MOCLA_API_BASE_URL_PRODUCTION') . config('api.urls.getLAPConflictByUserID');
-
-        $response = \Illuminate\Support\Facades\Http::withHeaders($headers)
+        $response = Http::withHeaders($headers)
             ->withOptions(['curl' => [CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1]])
             ->timeout(200)
             ->post($url, $payload)
@@ -51,9 +39,7 @@ class AwarenessReportProvider extends Model
         if (!isset($response['Conflict']) || empty($response['Conflict'])) {
             return collect();
         }
-
         $data = collect($response['Conflict']);
-
         // Apply filters from DB
         $filters = $report->filters ?? [];
         foreach ($filters as $key => $value) {
@@ -62,7 +48,6 @@ class AwarenessReportProvider extends Model
                 $data = $data->filter(fn($row) => strtoupper(trim($row[$key] ?? '')) === $filterValue)->values();
             }
         }
-
         return $data->map(function ($item, $index) {
             return (object)[
                 'id'        => $index + 1,

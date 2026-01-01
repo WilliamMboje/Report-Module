@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 use App\Jobs\GenerateConflictReportPdf;
 use Illuminate\Support\Facades\Storage;
 
-class ViewAwarenessReport extends ViewRecord
+class ViewAwarenessReport1 extends ViewRecord
 {
     protected static string $resource = AwarenessReportResource::class;
 
@@ -52,16 +52,62 @@ class ViewAwarenessReport extends ViewRecord
                             ->title('PDF generation started')
                             ->success()
                             ->send();
+                    //                });
+//WITHOUt JOBS
+//            Action::make('downloadPdf')
+//                ->label('Download PDF')
+//                ->icon('heroicon-o-document-text')
+//                ->action(function () {
+//                    $record = $this->record;
+//                    $providers = \App\Models\AwarenessReportProvider::all();
+////                    Log::info($providers);
+//                    $columns = $record->columns;
+
+
+
+//                    $orientation = count($columns) > 4 ? 'landscape' : 'portrait';
+
+//                    $html = view('reports.htmltopdf', compact(
+//                        'record',
+//                        'providers',
+//                        'columns'
+//                    ))->render();
+//
+//                    $pdf = SnappyPdf::loadHTML($html)
+//                        ->setPaper('a4', $orientation)
+//                        ->setOption('margin-top', 10)
+//                        ->setOption('margin-bottom', 10);
+//
+//                    return response()->streamDownload(
+//                        fn () => print $pdf->output(),
+//                        "report-{$record->id}.pdf"
+//                    );
+//dom pdf
+//                    $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView(
+//                        'reports.pdf',
+//                        compact('record', 'providers', 'columns')
+//                    )->setPaper('a4', $orientation);
+//                    return response()->streamDownload(
+//                        fn() => print $pdf->output(),
+//                        "report-{$record->id}.pdf"
+//                    );
+
+
+
                 }),
             //WITH JOBS ALSO
             Action::make('downloadReadyPdf')
                 ->label('Download Ready PDF')
                 ->color('success') //  makes the button green
+
                 ->icon('heroicon-o-document-text')
                 ->url(function () {
                     $record = $this->record;
                     $userId = 70; // Current user
+
                     $files = Storage::disk('local')->files('reports');
+//                    Log::info($files);
+
                     // Find the latest file for this user and report
                     $pdfFile = collect($files)
                         ->filter(fn($f) => str_contains($f, "report-{$record->id}-user-{$userId}-"))
@@ -82,10 +128,12 @@ class ViewAwarenessReport extends ViewRecord
                     $record = $this->record;
                     $userId = 70;
                     $files = Storage::disk('local')->files('reports');
+//Log::info($files);
                     return !collect($files)
                         ->contains(fn($f) => str_contains($f, "report-{$record->id}-user-{$userId}-"));
                 })
                 ->openUrlInNewTab()
+
         ];
     }
 }

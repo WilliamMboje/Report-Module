@@ -71,8 +71,6 @@ class AwarenessReportForm
                             ])
                             ->placeholder('Select an option'),
                     ]),
-
-
             ]);
     }
 }
