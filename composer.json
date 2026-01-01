@@ -15,7 +15,8 @@
         "laravel/tinker": "^2.10.1",
         "maatwebsite/excel": "^1.1",
         "spatie/laravel-responsecache": "^7.7",
-      "ext-curl": "*"
+      "ext-curl": "*",
+      "ext-pdo": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

@@ -99,18 +99,31 @@ return [
             'sslmode' => 'prefer',
         ],
 // ---------------------------------ADDED CODES FOR SERVER INTERACTION-------------------------------------------
-        // 'sqlsrv_lsms' => [
-        //     'driver' => 'sqlsrv',
-        //     'host' => env('DB_HOST_LSMS', 'localhost'),
-        //     'port' => env('DB_PORT_LSMS', '1433'),
-        //     'database' => env('DB_DATABASE_LSMS', 'LSMS'),
-        //     'username' => env('DB_USERNAME_LSMS', 'your_username'),
-        //     'password' => env('DB_PASSWORD_LSMS', 'your_password'),
-        //     'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'true'),
-        //     'options' => [
-        //         PDO::ATTR_EMULATE_PREPARES => false,
-        //     ],
-        // ],
+         'sqlsrv_lsms' => [
+             'driver' => 'sqlsrv',
+             'host' => env('DB_HOST_TEST', 'localhost'),
+             'port' => env('DB_PORT_TEST', '185'),
+             'database' => env('DB_DATABASE_TEST', 'LSMS'),
+             'username' => env('DB_USERNAME_TEST', 'your_username'),
+             'password' => env('DB_PASSWORD_TEST', 'your_password'),
+//             'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'true'),
+             'options' => [
+                 PDO::ATTR_EMULATE_PREPARES => false,
+             ],
+         ],
+
+//        'sqlsrv_lsms' => [
+//            'driver' => 'sqlsrv',
+//            'host' => env('DB_HOST_LSMS', 'localhost'),
+//            'port' => env('DB_PORT_LSMS', '1433'),
+//            'database' => env('DB_DATABASE_LSMS', 'LSMS'),
+//            'username' => env('DB_USERNAME_LSMS', 'your_username'),
+//            'password' => env('DB_PASSWORD_LSMS', 'your_password'),
+//            'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'true'),
+//            'options' => [
+//                PDO::ATTR_EMULATE_PREPARES => false,
+//            ],
+//        ],
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',
