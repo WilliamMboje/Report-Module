@@ -46,13 +46,21 @@ class ConflictReportForm
                         TextInput::make('filters.Mwananchi')
                             ->label('Mwananchi')
                             ->placeholder('Search by citizen'),
-
                         Select::make('filters.Aina')
                             ->label('Aina')
                             ->options(function (){
                                 return collect(  $data = DB::connection('sqlsrv_lsms')
                                     ->select('EXEC uspGetAttrByType ?', [
                                         103
+                                    ]))->pluck('AttrDescription','attrId')->toArray();
+                            })
+                            ->placeholder('Choose type'),
+                        Select::make('filters.Age')
+                            ->label('Age')
+                            ->options(function (){
+                                return collect(  $data = DB::connection('sqlsrv_lsms')
+                                    ->select('EXEC uspGetAttrByType ?', [
+                                        105
                                     ]))->pluck('AttrDescription','attrId')->toArray();
                             })
                             ->placeholder('Choose type'),
@@ -66,15 +74,10 @@ class ConflictReportForm
                                     ->toArray();
                             })
                             ->placeholder('Select an option'),
-
-
-
-        Select::make('filters.Hali')
+                        Select::make('filters.Hali')
                             ->label('Hali')
-                            ->options([
-                                'Active' => 'Active',
-                                'Inactive' => 'Inactive',
-                            ])
+                            ->options(collect( $data = DB::connection('sqlsrv_lsms')
+                                ->select('EXEC uspGetGender'))->pluck()->toArray())
                             ->placeholder('Select an option'),
                     ]),
             ]);
