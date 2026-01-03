@@ -1,9 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 Route::get('/', function () {
-    return redirect('/admin');
+    return redirect()->route('filament.staff.auth.login');
 });
+
 
 Route::get('/conflicts/export', function () {
     $data = app(\App\Filament\Pages\Conflicts::class)->getConflicts();

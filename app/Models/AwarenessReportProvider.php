@@ -4,24 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Sushi\Sushi;
-use Illuminate\Support\Facades\Http;
 
 class AwarenessReportProvider extends Model
 {
     use Sushi;
-
-
     protected $schema = [
-//        'id' => 'integer',        // just an index
-//        'date' => 'string',       // e.g., case date
-//        'mwananchi' => 'string',  // user/citizen
-//        'mkoa' => 'string',       // region
-//        'maelezo' => 'string',    // description
-//        'aina' => 'string',       // type
-//        'hali' => 'string',       // status
-
         'id' => 'integer',
         'Maelezo' => 'string',
         'Mkoa' => 'string',

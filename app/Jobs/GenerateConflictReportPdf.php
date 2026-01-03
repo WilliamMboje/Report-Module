@@ -31,35 +31,23 @@ class GenerateConflictReportPdf implements ShouldQueue
 
     public function handle()
     {
-        ini_set('memory_limit', '1G');
-        set_time_limit(600);
         Log::info("Generating PDF for report {$this->reportId} and user ");
 
         $report = AwarenessReport::findOrFail($this->reportId);
-
         // Get filtered data
         $providers = \App\Models\AwarenessReportProvider::getFilteredRows($report);
-
         $columns = $report->columns ?? ['Date', 'Mwananchi', 'Mkoa', 'Maelezo', 'Aina', 'Hali'];
 
-        $snappyBinary = config('snappy.pdf.binary');
-        $orientation = count($columns) > 4 ? 'landscape' : 'portrait';
+        $pdf = PDF::loadView('reports.htmltopdf', compact('report', 'providers', 'columns'))
+            ->setPaper('a4', count($columns) > 4 ? 'landscape' : 'portrait');
 
-        if ($snappyBinary && file_exists($snappyBinary)) {
-            Log::info("Using Snappy for conflict report {$this->reportId}");
-            $pdf = PDF::loadView('reports.htmltopdf', compact('report', 'providers', 'columns'))
-                ->setPaper('a4', $orientation);
-            $output = $pdf->output();
-        } else {
-            Log::warning("Snappy binary not found. Falling back to DomPDF for conflict report {$this->reportId}");
-            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('reports.htmltopdf', compact('report', 'providers', 'columns'))
-                ->setPaper('a4', $orientation);
-            $output = $pdf->output();
-        }
+        // Unique filename per report & user
+        $userId = 70 ?? 0; // if dispatching via queue, pass userId when dispatching
 
-        $filename = "reports/report-{$report->id}-user-{$this->userId}-" . now()->timestamp . ".pdf";
+        $filename = "reports/report-{$report->id}-user-{$userId}-" . now()->timestamp . ".pdf";
+//        Log::info("Generating PDF for report {$report->id} and user {$userId}");
 
-        Storage::disk('local')->put($filename, $output);
+        Storage::disk('local')->put($filename, $pdf->output());
 
         // Save path to DB
 //        $report->pdf_path = $filename;

@@ -7,6 +7,7 @@ use Barryvdh\Snappy\Facades\SnappyPdf;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use App\Jobs\GenerateConflictReportPdf;
 use Illuminate\Support\Facades\Storage;
@@ -24,7 +25,6 @@ class ViewAwarenessReport extends ViewRecord
                 ->action(function () {
                     $record = $this->record; //AwarenessReport DB model
                     $providers = \App\Models\AwarenessReportProvider::all(); // Fetch all API data
-
                     $columns = $record->columns;
                     $csv = \League\Csv\Writer::createFromString('');
                     $csv->insertOne($columns);
@@ -39,7 +39,7 @@ class ViewAwarenessReport extends ViewRecord
                         "report-{$record->id}.csv"
                     );
                 }),
-//WITH JOBS
+            //WITH JOBS
             Action::make('downloadPdf')
                 ->label('Download PDF')
                 ->icon('heroicon-o-document-text')
@@ -54,61 +54,11 @@ class ViewAwarenessReport extends ViewRecord
                             ->title('PDF generation started')
                             ->success()
                             ->send();
-
-
-                    //                });
-
-
-
-
-
-//WITHOU JOBS
-//            Action::make('downloadPdf')
-//                ->label('Download PDF')
-//                ->icon('heroicon-o-document-text')
-//                ->action(function () {
-//                    $record = $this->record;
-//                    $providers = \App\Models\AwarenessReportProvider::all();
-////                    Log::info($providers);
-//                    $columns = $record->columns;
-
-
-
-//                    $orientation = count($columns) > 4 ? 'landscape' : 'portrait';
-
-//                    $html = view('reports.htmltopdf', compact(
-//                        'record',
-//                        'providers',
-//                        'columns'
-//                    ))->render();
-//
-//                    $pdf = SnappyPdf::loadHTML($html)
-//                        ->setPaper('a4', $orientation)
-//                        ->setOption('margin-top', 10)
-//                        ->setOption('margin-bottom', 10);
-//
-//                    return response()->streamDownload(
-//                        fn () => print $pdf->output(),
-//                        "report-{$record->id}.pdf"
-//                    );
-//dom pdf
-//                    $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView(
-//                        'reports.pdf',
-//                        compact('record', 'providers', 'columns')
-//                    )->setPaper('a4', $orientation);
-//                    return response()->streamDownload(
-//                        fn() => print $pdf->output(),
-//                        "report-{$record->id}.pdf"
-//                    );
-
-
-
                 }),
             //WITH JOBS ALSO
             Action::make('downloadReadyPdf')
                 ->label('Download Ready PDF')
-                ->color('success') // ✅ makes the button green
-
+                ->color('success') //  makes the button green
                 ->icon('heroicon-o-document-text')
                 ->url(function () {
                     $record = $this->record;
@@ -137,7 +87,6 @@ class ViewAwarenessReport extends ViewRecord
                         ->contains(fn($f) => str_contains($f, "report-{$record->id}-user-{$userId}-"));
                 })
                 ->openUrlInNewTab()
-
         ];
     }
 }

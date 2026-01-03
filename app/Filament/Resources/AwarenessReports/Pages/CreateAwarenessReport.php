@@ -11,11 +11,7 @@ use Filament\Schemas\Components\Section;
 
 class CreateAwarenessReport extends CreateRecord
 {
-//    protected static string $resource = AwarenessReportResource::class;
-
     protected static string $resource = AwarenessReportResource::class;
-
-
     //REDIRECT TO INDEX
     protected function getRedirectUrl(): string
     {
