@@ -14,6 +14,8 @@ use Filament\Tables\Filters\SelectFilter;
 
 class LegalAidProvidersTable
 {
+
+
     public static function configure(Table $table): Table
     {
         return $table
@@ -29,7 +31,9 @@ class LegalAidProvidersTable
                     ->sortable(),
                 BadgeColumn::make('status')
                     ->label('Status')
-                    ->getStateUsing(fn ($record) => $record->status)
+                    ->getStateUsing(function ($record) {
+                        return $record->approved_date?->greaterThanOrEqualTo(now()->subYears(3)) ? 'active' : 'expired';
+                    })
                     ->colors([
                         'success' => 'active',
                         'danger' => 'expired',
@@ -75,14 +79,7 @@ class LegalAidProvidersTable
                         'expired' => 'Expired',
                     ])
                     ->query(function ($query, $value) {
-                        if ($value === 'active') {
-                            $query->whereDate('approved_date', '>=', now()->subYears(3));
-                        } else {
-                            $query->where(function ($q) {
-                                $q->whereDate('approved_date', '<', now()->subYears(3))
-                                  ->orWhereNull('approved_date');
-                            });
-                        }
+                        $query->filtered(['status' => $value]);
                     }),
             ])
             ->recordActions([

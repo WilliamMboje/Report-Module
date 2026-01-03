@@ -8,6 +8,11 @@ class ProvidersPieChartWidget extends Widget
 {
     protected string $view = 'filament.widgets.providers-pie-chart';
 
+    public static function canView(): bool
+    {
+        return false;
+    }
+
     public array $labels = [];
     public array $data = [];
     public int $total = 0;

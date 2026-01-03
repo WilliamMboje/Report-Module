@@ -35,5 +35,8 @@ class AppServiceProvider extends ServiceProvider
                 }
             });
         }
+
+        // Prevent Lazy Loading & N+1 Queries in Development
+        \Illuminate\Database\Eloquent\Model::shouldBeStrict(! app()->isProduction());
     }
 }

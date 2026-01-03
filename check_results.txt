@@ -1,0 +1,5 @@
+PHP Version: 8.2.12
+Loaded Extensions: Core, bcmath, calendar, ctype, date, filter, hash, iconv, json, SPL, pcre, random, readline, Reflection, session, standard, mysqlnd, tokenizer, zlib, libxml, dom, PDO, bz2, SimpleXML, xml, xmlreader, xmlwriter, openssl, curl, fileinfo, gd, gettext, intl, mbstring, exif, mysqli, pdo_mysql, pdo_sqlite, sqlsrv, pdo_sqlsrv, zip, Phar, ftp
+Sqlite3 Extension: Disabled
+PDO Sqlite: Enabled
+WKHTML_PDF_BINARY: Not defined

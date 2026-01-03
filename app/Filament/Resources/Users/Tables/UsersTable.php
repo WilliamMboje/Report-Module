@@ -16,6 +16,7 @@ class UsersTable
             ->columns([
                 \Filament\Tables\Columns\TextColumn::make('name'),
                 \Filament\Tables\Columns\TextColumn::make('email'),
+                \Filament\Tables\Columns\TextColumn::make('created_at'),
             ])
             ->filters([
                 //

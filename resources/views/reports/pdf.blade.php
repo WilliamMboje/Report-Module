@@ -62,17 +62,17 @@
         .badge-danger {
             background-color: #ef4444;
         }
-        .watermark {
+/* .watermark {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) rotate(-45deg);
             font-size: 120px;
             font-weight: bold;
-            color: rgba(0, 0, 0, 0.05);
+            color: #f0f0f0;
             z-index: -1;
             white-space: nowrap;
-        }
+        } */
         .report-info {
             text-align: right;
             font-size: 10px;
@@ -82,50 +82,50 @@
     </style>
 </head>
 <body>
-    <div class="watermark">MoCLA</div>
+    {{-- <div class="watermark">MoCLA</div> --}}
     
     <div class="header">
         <h1>THE UNITED REPUBLIC OF TANZANIA</h1>
-        <h3>MINISTRY OF CONSTITUTIONAL AND LEGAL AFFAIRS</h3>
-        <img src="{{ public_path('images/logo.png') }}" class="logo" style="height:20px; width:20px;" alt="Logo">
+        <h2>MINISTRY OF CONSTITUTIONAL AND LEGAL AFFAIRS</h2>
+        <img src="{{ public_path('images/logo.png') }}" class="logo" alt="Logo">
         <br>
-         <h3><strong>Title:</strong> {{ $record->title }}<br></h3>
+         <h2><strong>Title:</strong> {{ $record->title }}<br></h2>
     </div>
 
-    <div class="report-info">
-       
-        <strong>Generated on:</strong> {{ now()->format('Y-m-d H:i:s') }}
-    </div>
+<div class="report-info">
 
-    <table>
-        <thead>
-            <tr>
-                <th style="width: 40px;">#</th>
-                @foreach($columns as $column)
-                    <th>{{ ucfirst(str_replace('_', ' ', $column)) }}</th>
-                @endforeach
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($providers as $index => $provider)
-                <tr>
-                    <td>{{ $index + 1 }}</td>
-                    @foreach($columns as $column)
-                        <td>
-                            @if($column === 'paid')
-                                @if($provider->paid)
-                                    <span class="badge badge-success">Paid</span>
-                                @else
-                                    <span class="badge badge-danger">Not Paid</span>
-                                @endif
-                            @else
-                                {{ $provider->$column }}
-                            @endif
-                        </td>
-                    @endforeach
-                </tr>
+    <strong>Generated on:</strong> {{ now()->format('Y-m-d H:i:s') }}
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th style="width: 40px;">#</th>
+        @foreach($columns as $column)
+            <th>{{ ucfirst(str_replace('_', ' ', $column)) }}</th>
+        @endforeach
+    </tr>
+    </thead>
+    <tbody>
+    @foreach($providers as $index => $provider)
+        <tr style="page-break-inside: avoid;">
+            <td>{{ $index + 1 }}</td>
+            @foreach($columns as $column)
+                <td>
+                    @if($column === 'paid')
+                        @if($provider->paid)
+                            <span class="badge badge-success">Paid</span>
+                        @else
+                            <span class="badge badge-danger">Not Paid</span>
+                        @endif
+                    @else
+                        {{ $provider->$column }}
+                    @endif
+                </td>
             @endforeach
-        </tbody>
-    </table>
+        </tr>
+    @endforeach
+    </tbody>
+</table>
 </body>
 </html>

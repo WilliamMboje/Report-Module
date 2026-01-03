@@ -4,44 +4,6 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddIndexesToProviders extends Migration
-{
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::table('legal_aid_providers', function (Blueprint $table) {
-            $table->index('region');
-            $table->index('district');
-            $table->index('paid');
-            $table->index('approved_date');
-        });
-    }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::table('legal_aid_providers', function (Blueprint $table) {
-            $table->dropIndex(['region']);
-            $table->dropIndex(['district']);
-            $table->dropIndex(['paid']);
-            $table->dropIndex(['approved_date']);
-        });
-    }
-}
-<?php
-
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
-
 return new class extends Migration
 {
     /**
@@ -53,13 +15,22 @@ return new class extends Migration
     {
         try {
             Schema::table('legal_aid_providers', function (Blueprint $table) {
-                $table->index('region');
-                $table->index('district');
-                $table->index('paid');
-                $table->index('approved_date');
+                // We use try-catch because these might already exist from failed previous runs
+                if (!Schema::hasIndex('legal_aid_providers', 'legal_aid_providers_region_index')) {
+                    $table->index('region');
+                }
+                if (!Schema::hasIndex('legal_aid_providers', 'legal_aid_providers_district_index')) {
+                    $table->index('district');
+                }
+                if (!Schema::hasIndex('legal_aid_providers', 'legal_aid_providers_paid_index')) {
+                    $table->index('paid');
+                }
+                if (!Schema::hasIndex('legal_aid_providers', 'legal_aid_providers_approved_date_index')) {
+                    $table->index('approved_date');
+                }
             });
         } catch (\Exception $e) {
-            // Ignore errors such as duplicate index already existing
+            // Ignore errors
         }
     }
 
@@ -78,7 +49,7 @@ return new class extends Migration
                 $table->dropIndex(['approved_date']);
             });
         } catch (\Exception $e) {
-            // Ignore errors when indexes do not exist
+            // Ignore errors
         }
     }
 };

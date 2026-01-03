@@ -20,50 +20,56 @@ class ViewReport extends ViewRecord
                 ->label('Download CSV')
                 ->icon('heroicon-o-arrow-down-tray')
                 ->action(function (\App\Models\Report $record) {
-                    Log::info($record);
-                    $providers = $record->providers;
                     $columns = $record->columns ?? [];
-
                     $csv = \League\Csv\Writer::createFromString('');
                     $csv->insertOne($columns);
 
-                    foreach ($providers as $provider) {
-                        Log::info($provider);
-                        $row = [];
-                        foreach ($columns as $column) {
-                            $row[] = $provider->$column;
-                        }
-                        $csv->insertOne($row);
-                    }
+                    // Use chunking if possible, but since we are using relationship/attribute it's already a collection.
+                    // For better optimization, we could query directly here with chunking.
+                    \App\Models\LegalAidProvider::query()
+                        ->filtered($record->filters ?? [])
+                        ->select(array_merge(['id'], $columns))
+                        ->chunk(100, function ($providers) use ($csv, $columns) {
+                            foreach ($providers as $provider) {
+                                $row = [];
+                                foreach ($columns as $column) {
+                                    $row[] = $provider->$column;
+                                }
+                                $csv->insertOne($row);
+                            }
+                        });
 
                     return response()->streamDownload(function () use ($csv) {
                         echo $csv->toString();
                     }, "report-{$record->id}.csv");
                 }),
-            \Filament\Actions\Action::make('downloadPdf')
-                ->label('Download PDF')
-                ->icon('heroicon-o-document-text')
+            \Filament\Actions\Action::make('generatePdf')
+                ->label('Generate PDF (Pro)')
+                ->icon('heroicon-o-cpu-chip')
+                ->color('info')
                 ->action(function (\App\Models\Report $record) {
-                    $providers = $record->providers;
-                    $columns = $record->columns ?? [];
+                    \App\Jobs\GenerateReportPdf::dispatch($record->id, auth()->id() ?? 0);
                     
-                    if (empty($columns)) {
-                        $columns = ['name']; // Default
-                    }
-
-                    // Use landscape orientation if more than 4 columns
-                    $orientation = count($columns) > 4 ? 'landscape' : 'portrait';
-
-                    $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('reports.pdf', [
-                        'record' => $record,
-                        'providers' => $providers,
-                        'columns' => $columns,
-                    ])->setPaper('a4', $orientation);
-
-                    return response()->streamDownload(function () use ($pdf) {
-                        echo $pdf->output();
-                    }, "report-{$record->id}.pdf");
+                    \Filament\Notifications\Notification::make()
+                        ->title('PDF generation started')
+                        ->body('This may take a few minutes for large reports. You will see the download button when it is ready.')
+                        ->success()
+                        ->send();
                 }),
+            \Filament\Actions\Action::make('downloadReadyPdf')
+                ->label('Download Ready PDF')
+                ->icon('heroicon-o-arrow-down-tray')
+                ->color('success')
+                ->visible(function (\App\Models\Report $record) {
+                    $userId = auth()->id() ?? 0;
+                    return \Illuminate\Support\Facades\Storage::disk('local')->exists("reports/report-{$record->id}-user-{$userId}.pdf");
+                })
+                ->url(function (\App\Models\Report $record) {
+                    $userId = auth()->id() ?? 0;
+                    $filename = "reports/report-{$record->id}-user-{$userId}.pdf";
+                    return route('pdf.download', ['path' => $filename]);
+                })
+                ->openUrlInNewTab(),
         ];
     }
     protected function getFooterWidgets(): array
