@@ -43,9 +43,6 @@ class ConflictReportForm
                 Section::make('Filter Criteria')
                     ->description('Define filters for your report')
                     ->schema([
-                        TextInput::make('filters.Mwananchi')
-                            ->label('Mwananchi')
-                            ->placeholder('Search by citizen'),
                         Select::make('filters.Aina')
                             ->label('Aina')
                             ->options(function (){
@@ -74,7 +71,7 @@ class ConflictReportForm
                                     ->toArray();
                             })
                             ->placeholder('Select an option'),
-                        Select::make('filters.Hali')
+                        Select::make('filters.Gender')
                             ->label('Hali')
                             ->options(collect( $data = DB::connection('sqlsrv_lsms')
                                 ->select('EXEC uspGetGender'))->pluck('Gender','Gender')->toArray())
