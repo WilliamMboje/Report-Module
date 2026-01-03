@@ -49,11 +49,12 @@ class ConflictReportForm
 
                         Select::make('filters.Aina')
                             ->label('Aina')
-                            ->options([
-                                'Seminar' => 'Seminar',
-                                'Workshop' => 'Workshop',
-                                'Campaign' => 'Campaign',
-                            ])
+                            ->options(function (){
+                                return collect(  $data = DB::connection('sqlsrv_lsms')
+                                    ->select('EXEC uspGetAttrByType ?', [
+                                        103
+                                    ]))->pluck('AttrDescription','attrId')->toArray();
+                            })
                             ->placeholder('Choose type'),
 
                         Select::make('filters.Mkoa')
