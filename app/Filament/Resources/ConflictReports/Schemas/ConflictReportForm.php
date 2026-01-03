@@ -77,7 +77,7 @@ class ConflictReportForm
                         Select::make('filters.Hali')
                             ->label('Hali')
                             ->options(collect( $data = DB::connection('sqlsrv_lsms')
-                                ->select('EXEC uspGetGender'))->pluck()->toArray())
+                                ->select('EXEC uspGetGender'))->pluck('Gender','Gender')->toArray())
                             ->placeholder('Select an option'),
                     ]),
             ]);
