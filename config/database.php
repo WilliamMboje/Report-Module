@@ -102,10 +102,10 @@ return [
          'sqlsrv_lsms' => [
              'driver' => 'sqlsrv',
              'host' => env('DB_HOST_TEST', 'localhost'),
-             'port' => env('DB_PORT_TEST', '185'),
+             'port' => env('DB_PORT_TEST', '1433'),
              'database' => env('DB_DATABASE_TEST', 'LSMS'),
-             'username' => env('DB_USERNAME_TEST', 'your_username'),
-             'password' => env('DB_PASSWORD_TEST', 'your_password'),
+             'username' => env('DB_USERNAME_TEST', 'LSS'),
+             'password' => env('DB_PASSWORD_TEST', 'Lsms@2025'),
 //             'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'true'),
              'options' => [
                  PDO::ATTR_EMULATE_PREPARES => false,
