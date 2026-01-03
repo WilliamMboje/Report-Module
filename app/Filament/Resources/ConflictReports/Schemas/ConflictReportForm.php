@@ -56,17 +56,16 @@ class ConflictReportForm
                             ])
                             ->placeholder('Choose type'),
 
-
                         Select::make('filters.Mkoa')
                             ->label('Mkoa')
                             ->options(function ($request) {
-
-                                 return DB::connection('sqlsrv_lsms')
-                                    ->select('EXEC uspGetRegion ?', [
-                                        -1
-                                    ]);
+                                return collect(DB::connection('sqlsrv_lsms')
+                                    ->select('EXEC uspGetRegion ?', [-1]))
+                                    ->pluck('Region', 'ID') // key => value
+                                    ->toArray();
                             })
                             ->placeholder('Select an option'),
+
 
 
         Select::make('filters.Hali')
